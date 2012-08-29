@@ -13,6 +13,13 @@ function TodoCtrl($scope) {
 			}
 		});
 	});
+	
+	// Add topbar button
+	forge.topbar.addButton({
+		icon: "img/accept.png"
+	}, function () {
+		$scope.$apply($scope.archive);
+	});
  
 	$scope.addTodo = function() {
 		$scope.todos.push({text:$scope.todoText, done:false});
