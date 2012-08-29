@@ -1,0 +1,16 @@
+{
+	"author": "connor@trigger.io", 
+	"config_version": "2", 
+	"description": "Angular todo list", 
+	"modules": {
+		"is": true, 
+		"logging": {
+			"level": "DEBUG"
+		}, 
+		"reload": true, 
+		"tools": true
+	}, 
+	"name": "Todo list", 
+	"platform_version": "v1.4", 
+	"version": "0.1"
+}
