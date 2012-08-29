@@ -13,13 +13,57 @@ function TodoCtrl($scope) {
 			}
 		});
 	});
-	
-	// Add topbar button
-	forge.topbar.addButton({
-		icon: "img/accept.png"
-	}, function () {
-		$scope.$apply($scope.archive);
+	forge.prefs.get("archived", function (archived) {
+		$scope.$apply(function () {
+			if (archived) {
+				$scope.archived = archived;
+			} else {
+				$scope.archived = [];
+				forge.prefs.set("archived", $scope.archived);
+			}
+		});
 	});
+	
+	// Add Forge tabbar buttons
+	forge.tabbar.addButton({
+		icon: "img/list.png",
+		text: "Todo list"
+	}, function (button) {
+		button.setActive();
+		button.onPressed.addListener(function () {
+			$scope.$apply($scope.showList);
+		});
+	});
+	forge.tabbar.addButton({
+		icon: "img/archive.png",
+		text: "Archive"
+	}, function (button) {
+		button.onPressed.addListener(function () {
+			$scope.$apply($scope.showArchive);
+		});
+	})
+ 
+	$scope.showList = function () {
+		$scope.listClass = "show";
+		$scope.archiveClass = "hide";
+		// Add archive button
+		forge.topbar.removeButtons();
+		forge.topbar.addButton({
+			icon: "img/accept.png"
+		}, function () {
+			$scope.$apply($scope.archive);
+		});
+	};
+	
+	$scope.showArchive = function () {
+		$scope.listClass = "hide";
+		$scope.archiveClass = "show";
+		// No topbar buttons for the archive
+		forge.topbar.removeButtons();
+	};
+	
+	// Show list initially
+	$scope.showList();
  
 	$scope.addTodo = function() {
 		$scope.todos.push({text:$scope.todoText, done:false});
@@ -40,8 +84,10 @@ function TodoCtrl($scope) {
 		$scope.todos = [];
 		angular.forEach(oldTodos, function(todo) {
 			if (!todo.done) $scope.todos.push(todo);
+			else $scope.archived.push(todo);
 		});
 		forge.prefs.set("todos", $scope.todos);
+		forge.prefs.set("archived", $scope.archived);
 	};
 }
 

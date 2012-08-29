@@ -9,6 +9,7 @@
 		}, 
 		"prefs": true, 
 		"reload": true, 
+		"tabbar": true, 
 		"tools": true, 
 		"topbar": true
 	}, 
